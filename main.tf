@@ -23,7 +23,7 @@ resource "hcloud_server" "server" {
   server_type = "cx11"
   image = "debian-10"
   location = "nbg1"
-  ssh_keys = ["${hcloud_ssh_key.default.id}"]
+  ssh_keys = [hcloud_ssh_key.default.id]
 
 #  network { 
 #    network_id = hcloud_network.network.id
@@ -33,5 +33,5 @@ resource "hcloud_server" "server" {
 
 resource "hcloud_ssh_key" "default" {
   name = "mars_ssh"
-  public_key = file("./.ssh/id_rsa.pub")
+  public_key = file("../secrets/id_rsa.mars.hetzner.pub")
 }
