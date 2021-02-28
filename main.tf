@@ -6,7 +6,7 @@ terraform {
     }
   }
 }
-
+# API token za upravljanje Hetznerja
 variable "hcloud_token" {}
 
 provider "hcloud" {
@@ -31,7 +31,13 @@ resource "hcloud_server" "server" {
 #  }
 }
 
+output "instance_ip_addr" {
+  value = hcloud_server.server.ipv4_address
+}
+
+
 resource "hcloud_ssh_key" "default" {
   name = "mars_ssh"
   public_key = file("../secrets/id_rsa.mars.hetzner.pub")
 }
+
