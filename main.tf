@@ -41,3 +41,12 @@ resource "hcloud_ssh_key" "default" {
   public_key = file("../secrets/id_rsa.mars.hetzner.pub")
 }
 
+resource "local_file" "hosts_cfg" {
+  content = templatefile("./templates/hosts.tpl",
+    {
+      hosts = hcloud_server.server.*.ipv4_address
+    }
+  )
+  filename = "./ansible/inventory/hosts.cfg"
+}
+

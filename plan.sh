@@ -1,3 +1,3 @@
 source ./scripts/secrets.sh
 
-terraform apply
+terraform plan 
