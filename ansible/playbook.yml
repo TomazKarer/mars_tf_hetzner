@@ -41,13 +41,7 @@
         state: present
         update_cache: yes
 
-#    - name: Set authorized key took from file
-#      authorized_key:
-#        user: root
-#        state: present
-#        key: "{{ lookup('file', '../../secrets/id_rsa.mars.github.pub')}}"
-
-    - name: ensure private key and public one are present
+    - name: Transfet github key to Mars
       copy: 
         src: ../../secrets/id_rsa.mars.github
         dest: "/root/.ssh/id_rsa.mars.github" 
@@ -60,3 +54,7 @@
         accept_hostkey: yes
         key_file: /root/.ssh/id_rsa.mars.github
 
+    - name: Execute install procedure
+      shell: . install.sh deploy nginx_proxy nginx_cv nginx_proxy >log.txt 2>&1
+      args:
+        chdir: /root/karers.eu/
