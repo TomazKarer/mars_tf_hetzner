@@ -36,4 +36,5 @@ terraform.rc
 # Moje
 *.swp
 *.hcl
+ansible/inventory/
 
