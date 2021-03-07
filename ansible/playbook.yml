@@ -55,4 +55,4 @@
         key_file: /root/.ssh/id_rsa.mars.github
 
     - name: Execute install procedure
-      shell: /root/karers.eu/install.sh deploy certbot nginx_proxy nginx_cv nginx_proxy >log.txt 3>&1
+      shell: /root/karers.eu/install.sh prod deploy certbot nginx_proxy nginx_cv nginx_proxy >log.txt 3>&1
