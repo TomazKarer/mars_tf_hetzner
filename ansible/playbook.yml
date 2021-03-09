@@ -56,3 +56,10 @@
 
     - name: Execute install procedure
       shell: /root/karers.eu/install.sh prod deploy certbot nginx_proxy nginx_cv nginx_proxy >log.txt 3>&1
+
+    - name: Setup cron for renewing cert
+      ansible.builtin.cron:
+        name: "renew"
+        minute: "0"
+        hour: "4"
+        job: "/root/karers.eu/install.sh prod deploy certbot"
