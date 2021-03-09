@@ -10,7 +10,7 @@
 
     - name: Install required system packages
       apt: name={{ item }} state=latest update_cache=yes
-      loop: [ 'apt-transport-https', 'ca-certificates', 'curl', 'software-properties-common', 'python3-pip', 'virtualenv', 'python3-setuptools']
+      loop: [ 'apt-transport-https', 'ca-certificates', 'curl', 'software-properties-common', 'python3-pip', 'virtualenv', 'python3-setuptools', 'rclone', 'sqlite3']
 
     - name: Add Docker GPG apt Key
       apt_key:
@@ -41,10 +41,16 @@
         state: present
         update_cache: yes
 
-    - name: Transfet github key to Mars
+    - name: Transfer github key to Mars
       copy: 
         src: ../../secrets/id_rsa.mars.github
         dest: "/root/.ssh/id_rsa.mars.github" 
+        mode: 0600
+
+    - name: Transfer rclone config to Mars
+      copy: 
+        src: ../../secrets/rclone.conf
+        dest: "/root/.config/rclone/" 
         mode: 0600
 
     - name: Git checkout
@@ -55,7 +61,7 @@
         key_file: /root/.ssh/id_rsa.mars.github
 
     - name: Execute install procedure
-      shell: /root/karers.eu/install.sh prod deploy certbot nginx_proxy nginx_cv nginx_proxy >log.txt 3>&1
+      shell: /root/karers.eu/install.sh prod deploy certbot nginx_proxy nginx_cv bitwardenrs nginx_proxy >log.txt 3>&1
 
     - name: Setup cron for renewing cert
       ansible.builtin.cron:
@@ -63,3 +69,10 @@
         minute: "0"
         hour: "4"
         job: "/root/karers.eu/install.sh prod deploy certbot"
+
+    - name: Setup cron for backup
+      ansible.builtin.cron:
+        name: "backup"
+        minute: "0"
+        hour: "4"
+        job: "/root/karers.eu/install.sh prod deploy backup"
